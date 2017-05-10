@@ -8,8 +8,6 @@ __version__ = '0.0.1'
 
 __all__ = ('setup', 'get_env', 'render_template', 'template')
 
-
-APP_CONTEXT_PROCESSORS_KEY = 'japronto_jinja2_context_processors'
 APP_KEY = 'japronto_jinja2_environment'
 
 
@@ -42,6 +40,7 @@ def render_string(template_name, request, context, *, app_key=APP_KEY):
         # output and rendered page we add same message to *reason* and
         # *text* arguments.
         raise request.Response(code=500, text=text)
+
     try:
         template = env.get_template(template_name)
     except jinja2.TemplateNotFound as e:
@@ -51,8 +50,7 @@ def render_string(template_name, request, context, *, app_key=APP_KEY):
         text = 'context should be mapping, not {}'.format(type(context))
         # same reason as above
         raise request.Response(code=500, text=text)
-    # if request.get(REQUEST_CONTEXT_KEY):
-    #     context = dict(request[REQUEST_CONTEXT_KEY], **context)
+
     text = template.render(context)
     return text
 

@@ -1,16 +1,15 @@
 language: python
 python:
-  - 3.4
   - 3.5
   - 3.6
 
 install:
   - pip install --upgrade pip wheel
   - pip install codecov
-  - pip install -r requirements-dev.txt
+  - pip install -e .[dev]
 
 script:
-  py.test --cov=aiohttp_jinja2 tests
+  py.test --cov=japronto_jinja2 tests
 
 after_success:
   codecov

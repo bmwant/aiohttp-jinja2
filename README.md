@@ -1,23 +1,7 @@
 ## japronto_jinja2
 
-.. image:: https://travis-ci.org/aio-libs/aiohttp-jinja2.svg?branch=master
-    :target: https://travis-ci.org/aio-libs/aiohttp-jinja2
-.. image:: https://codecov.io/gh/aio-libs/aiohttp-jinja2/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/aio-libs/aiohttp-jinja2
-.. image:: https://img.shields.io/pypi/v/aiohttp-jinja2.svg
-    :target: https://pypi.python.org/pypi/aiohttp-jinja2
-.. image:: https://readthedocs.org/projects/aiohttp-jinja2/badge/?version=latest
-    :target: http://aiohttp-jinja2.readthedocs.io/en/latest/?badge=latest
-
-
-jinja2_ template renderer for `aiohttp.web`__.
-
-
-.. _jinja2: http://jinja.pocoo.org
-
-.. _aiohttp_web: https://aiohttp.readthedocs.io/en/latest/web.html
-
-__ aiohttp_web_
+[jinja2](http://jinja.pocoo.org) asynchronous template renderer for 
+[japronto](https://github.com/squeaky-pl/japronto).
 
 ### Installation
 
@@ -38,9 +22,11 @@ pytest
 
 Before template rendering you have to setup *jinja2 environment* first::
 
-    app = web.Application()
-    aiohttp_jinja2.setup(app,
-        loader=jinja2.FileSystemLoader('/path/to/templates/folder'))
+    import jinja2
+    from japronto import Application
+    
+    app = Application()
+    japronto_jinja2.setup(app, loader=jinja2.FileSystemLoader('/path/to/templates/folder'))
 
 
 After that you may to use template engine in your *web-handlers*. The
@@ -48,28 +34,30 @@ most convenient way is to decorate a *web-handler*.
 
 Using the function based web handlers::
 
-    @aiohttp_jinja2.template('tmpl.jinja2')
+    @ajapronto_jinja2.template('tmpl.jinja2')
     def handler(request):
-        return {'name': 'Andrew', 'surname': 'Svetlov'}
+        return {'action': 'follow', 'person': 'me'}
 
 
+On handler call the `japronto_jinja2.template` decorator will pass
+returned dictionary `{'action': 'follow', 'person': 'me'}` into
+template named `tmpl.jinja2` for getting resulting HTML text.
 
-On handler call the ``aiohttp_jinja2.template`` decorator will pass
-returned dictionary ``{'name': 'Andrew', 'surname': 'Svetlov'}`` into
-template named ``tmpl.jinja2`` for getting resulting HTML text.
-
-If you need more complex processing (set response headers for example)
-you may call ``render_template`` function.
+If you need more complex processing (modify response on your own)
+you may call `render_template` function.
 
 Using a function based web handler::
 
     async def handler(request):
-        context = {'name': 'Andrew', 'surname': 'Svetlov'}
+        context = {'action': 'unsubscribe', 'from': 'channel'}
         response = aiohttp_jinja2.render_template('tmpl.jinja2',
                                                   request,
                                                   context)
-        response.headers['Content-Language'] = 'ru'
+        # do smth with your response
         return response
+
+See [examples](https://github.com/bmwant/japronto-jinja2/tree/master/examples) 
+directory for more complete snippets.
 
 ### License
 
