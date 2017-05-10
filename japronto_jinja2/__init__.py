@@ -11,6 +11,10 @@ __all__ = ('setup', 'get_env', 'render_template', 'template')
 APP_KEY = 'japronto_jinja2_environment'
 
 
+class JJException(Exception):
+    """Japronto Jinja2 exception"""
+
+
 def setup(app, *args, app_key=APP_KEY, filters=None, **kwargs):
     env = jinja2.Environment(*args, **kwargs)
     if filters is not None:
@@ -39,17 +43,17 @@ def render_string(template_name, request, context, *, app_key=APP_KEY):
         # in order to see meaningful exception message both: on console
         # output and rendered page we add same message to *reason* and
         # *text* arguments.
-        raise request.Response(code=500, text=text)
+        return request.Response(code=500, text=text)
 
     try:
         template = env.get_template(template_name)
     except jinja2.TemplateNotFound as e:
         text = 'Template "{}" not found'.format(template_name)
-        raise request.Response(code=500, text=text) from e
+        raise JJException(text) from e
     if not isinstance(context, Mapping):
         text = 'context should be mapping, not {}'.format(type(context))
         # same reason as above
-        raise request.Response(code=500, text=text)
+        return JJException(text)
 
     text = template.render(context)
     return text
