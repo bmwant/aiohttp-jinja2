@@ -1,5 +1,7 @@
 ## japronto_jinja2
 
+[![Build Status](https://travis-ci.org/bmwant/japronto-jinja2.svg?branch=master)](https://travis-ci.org/bmwant/japronto-jinja2)
+
 [jinja2](http://jinja.pocoo.org) asynchronous template renderer for 
 [japronto](https://github.com/squeaky-pl/japronto).
 
