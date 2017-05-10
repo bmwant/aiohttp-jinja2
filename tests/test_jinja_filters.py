@@ -1,15 +1,13 @@
 import asyncio
-
 import jinja2
-from aiohttp import web
-
-import aiohttp_jinja2
+import japronto
+import japronto_jinja2
 
 
 @asyncio.coroutine
 def test_jinja_filters(test_client, loop):
 
-    @aiohttp_jinja2.template('tmpl.jinja2')
+    @japronto_jinja2.template('tmpl.jinja2')
     @asyncio.coroutine
     def index(request):
         return {}
@@ -17,10 +15,10 @@ def test_jinja_filters(test_client, loop):
     def add_2(value):
         return value + 2
 
-    app = web.Application(loop=loop)
-    aiohttp_jinja2.setup(
+    app = japronto.Application()
+    japronto_jinja2.setup(
         app,
-        loader=jinja2.DictLoader({'tmpl.jinja2': "{{ 5|add_2 }}"}),
+        loader=jinja2.DictLoader({'tmpl.jinja2': '{{ 5|add_2 }}'}),
         filters={'add_2': add_2}
     )
 
@@ -28,6 +26,6 @@ def test_jinja_filters(test_client, loop):
     client = yield from test_client(app)
 
     resp = yield from client.get('/')
-    assert 200 == resp.status
+    assert resp.status == 200
     txt = yield from resp.text()
-    assert '7' == txt
+    assert txt == '7'
