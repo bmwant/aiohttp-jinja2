@@ -29,6 +29,7 @@ dev_requires = tests_require + (
     'sphinx==1.5.5',
     'alabaster>=0.6.2',
     'pytest-cov==2.4.0',
+    'twine==1.8.1',
 )
 
 

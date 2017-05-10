@@ -6,7 +6,7 @@ flake:
 test: flake
 	py.test -s ./tests/
 
-cov cover coverage:
+coverage:
 	pytest --cov=japronto_jinja2 --cov-report=html --cov-report=term ./tests/
 	@echo "open file://`pwd`/htmlcov/index.html"
 
@@ -24,8 +24,13 @@ clean:
 	rm -rf build
 	rm -rf cover
 
+release: clean
+	python setup.py sdist
+	python setup.py bdist_wheel
+	twine upload -r pypi dist/*
+
 doc:
 	make -C docs html
 	@echo "open file://`pwd`/docs/_build/html/index.html"
 
-.PHONY: all build venv flake test vtest testloop cov clean doc
+.PHONY: all build venv flake test release coverage clean doc
