@@ -28,10 +28,10 @@ pip install japronto-jinja2
 
 ### Developing
 
-Install requirement and launch tests::
+Install requirement and launch tests:
 ```
-pip install -r requirements-dev.txt
-py.test tests
+pip install -e .[dev]
+pytest
 ```
 
 ### Usage

@@ -23,13 +23,19 @@ install_requires = (
 tests_require = install_requires + (
     'pytest>=3.0.7',
 )
+dev_requires = tests_require + (
+    'flake8==3.3.0',
+    'coverage==4.3.4',
+    'sphinx==1.5.5',
+    'alabaster>=0.6.2',
+    'pytest-cov==2.4.0',
+)
 
 
 setup(
     name='japronto_jinja2',
     version=version,
-    description=("jinja2 template renderer for aiohttp.web "
-                 "(http server for asyncio)"),
+    description='jinja2 async template renderer for japronto web server',
     long_description='\n\n'.join((read('README.md'), read('CHANGES.md'))),
     classifiers=[
         'License :: OSI Approved :: Apache Software License',
@@ -47,4 +53,7 @@ setup(
     packages=['japronto_jinja2'],
     install_requires=install_requires,
     include_package_data=True,
+    extras_require={
+        'dev': dev_requires,
+    },
 )

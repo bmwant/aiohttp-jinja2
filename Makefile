@@ -1,13 +1,13 @@
 # Some simple testing tasks (sorry, UNIX only).
 
 flake:
-	flake8 aiohttp_jinja2 tests 
+	flake8 japronto_jinja2 tests
 
 test: flake
 	py.test -s ./tests/
 
 cov cover coverage:
-	py.test --cov=aiohttp_jinja2 --cov-report=html --cov-report=term ./tests/
+	pytest --cov=japronto_jinja2 --cov-report=html --cov-report=term ./tests/
 	@echo "open file://`pwd`/htmlcov/index.html"
 
 clean:

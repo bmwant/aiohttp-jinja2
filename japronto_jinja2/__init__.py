@@ -36,7 +36,9 @@ def get_env(app, *, app_key=APP_KEY):
 def render_string(template_name, request, context, *, app_key=APP_KEY):
     env = getattr(request.app, app_key)
     if env is None:
-        text = 'Template engine is not initialized, call japronto_jinja2.setup first'        # in order to see meaningful exception message both: on console
+        text = ('Template engine is not initialized, '
+                'call japronto_jinja2.setup first')
+        # in order to see meaningful exception message both: on console
         # output and rendered page we add same message to *reason* and
         # *text* arguments.
         raise request.Response(code=500, text=text)
@@ -57,19 +59,14 @@ def render_string(template_name, request, context, *, app_key=APP_KEY):
 
 def render_template(template_name, request, context, *,
                     app_key=APP_KEY, encoding='utf-8', status=200):
-    # response = request.Response(code=status)
     if context is None:
         context = {}
     text = render_string(template_name, request, context, app_key=app_key)
-    # response.mime_type = 'text/html'
-    # response.encoding = encoding
-    # response.text = text
     return request.Response(code=status, text=text,
                             mime_type='text/html', encoding=encoding)
 
 
 def template(template_name, *, app_key=APP_KEY, encoding='utf-8', status=200):
-
     def wrapper(func):
         @asyncio.coroutine
         @functools.wraps(func)
@@ -83,8 +80,8 @@ def template(template_name, *, app_key=APP_KEY, encoding='utf-8', status=200):
             request = args[-1]
 
             response = render_template(template_name, request, context,
-                                       app_key=app_key, encoding=encoding)
-            # response.set_status(status)
+                                       app_key=app_key, encoding=encoding,
+                                       status=status)
             return response
         return wrapped
     return wrapper
