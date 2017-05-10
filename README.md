@@ -1,5 +1,5 @@
-aiohttp_jinja2
-==============
+## japronto_jinja2
+
 .. image:: https://travis-ci.org/aio-libs/aiohttp-jinja2.svg?branch=master
     :target: https://travis-ci.org/aio-libs/aiohttp-jinja2
 .. image:: https://codecov.io/gh/aio-libs/aiohttp-jinja2/branch/master/graph/badge.svg
@@ -19,24 +19,22 @@ jinja2_ template renderer for `aiohttp.web`__.
 
 __ aiohttp_web_
 
-Installation
-------------
-Install from PyPI::
+### Installation
 
-    pip install aiohttp-jinja2
+Install from PyPI:
+```
+pip install japronto-jinja2
+```
 
-
-Developing
-----------
+### Developing
 
 Install requirement and launch tests::
+```
+pip install -r requirements-dev.txt
+py.test tests
+```
 
-    pip install -r requirements-dev.txt
-    py.test tests
-
-
-Usage
------
+### Usage
 
 Before template rendering you have to setup *jinja2 environment* first::
 
@@ -54,13 +52,6 @@ Using the function based web handlers::
     def handler(request):
         return {'name': 'Andrew', 'surname': 'Svetlov'}
 
-Or for `Class Based Views
-<https://aiohttp.readthedocs.io/en/stable/web.html#class-based-views>`::
-
-    class Handler(web.View):
-        @aiohttp_jinja2.template('tmpl.jinja2')
-        async def get(self):
-            return {'name': 'Andrew', 'surname': 'Svetlov'}
 
 
 On handler call the ``aiohttp_jinja2.template`` decorator will pass
@@ -80,19 +71,6 @@ Using a function based web handler::
         response.headers['Content-Language'] = 'ru'
         return response
 
-Or, again, a class based view::
+### License
 
-    class Handler(web.View):
-        async def get(self):
-            context = {'name': 'Andrew', 'surname': 'Svetlov'}
-            response = aiohttp_jinja2.render_template('tmpl.jinja2',
-                                                      self.request,
-                                                      context)
-            response.headers['Content-Language'] = 'ru'
-            return response
-
-
-License
--------
-
-``aiohttp_jinja2`` is offered under the Apache 2 license.
+`japronto_jinja2` is offered under the Apache 2 license.
