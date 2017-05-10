@@ -22,6 +22,7 @@ install_requires = (
 )
 tests_require = install_requires + (
     'pytest>=3.0.7',
+    'aiohttp==2.0.7',
 )
 dev_requires = tests_require + (
     'flake8==3.3.0',

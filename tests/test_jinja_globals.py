@@ -1,4 +1,3 @@
-import asyncio
 import japronto
 import jinja2
 import japronto_jinja2
@@ -14,28 +13,25 @@ def test_get_env(loop):
     assert env is japronto_jinja2.get_env(app)
 
 
-# @asyncio.coroutine
-# def test_url(test_client, loop):
-#
-#     @japronto_jinja2.template('tmpl.jinja2')
-#     @asyncio.coroutine
-#     def index(request):
-#         return {}
-#
-#     @asyncio.coroutine
-#     def other(request):
-#         return
-#
-#     app = japronto.Application()
-#     japronto_jinja2.setup(app, loader=jinja2.DictLoader(
-#         {'tmpl.jinja2':
-#          "{{ url('other', name='John_Doe')}}"}))
-#
-#     app.router.add_route('GET', '/', index)
-#     app.router.add_route('GET', '/user/{name}', other, name='other')
-#     client = yield from test_client(app)
-#
-#     resp = yield from client.get('/')
-#     assert 200 == resp.status
-#     txt = yield from resp.text()
-#     assert '/user/John_Doe' == txt
+async def test_url(test_client, loop):
+    @japronto_jinja2.template('tmpl.jinja2')
+    async def index(request):
+        return {}
+
+    async def other(request):
+        return
+
+    app = japronto.Application()
+    japronto_jinja2.setup(app, loader=jinja2.DictLoader(
+        {'tmpl.jinja2':
+         "{{ url('other', name='John_Doe')}}"}))
+
+    app.router.add_route('GET', '/', index)
+    app.router.add_route('GET', '/user/{name}', other, name='other')
+    client = await test_client(app)
+
+    resp = await client.get('/')
+    assert resp.status == 200
+    txt = await resp.text()
+    assert txt == '/user/John_Doe'
+    assert False
